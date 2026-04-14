@@ -2,16 +2,15 @@ name: Lighthouse Monitoring
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # каждый день в 06:00 UTC
-  workflow_dispatch:     # возможность запускать вручную
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Run Lighthouse
         uses: treosh/lighthouse-ci-action@v12
@@ -20,6 +19,11 @@ jobs:
             https://ramadanovosibirsk.com/
             https://ramadanovosibirsk.com/loyalty/
             https://ramadanovosibirsk.com/apartments/
-           uploadArtifacts: true
-           artifactName: lighthouse-report
-           temporaryPublicStorage: true
+          uploadArtifacts: false
+          temporaryPublicStorage: true
+
+      - name: Upload Lighthouse report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci
